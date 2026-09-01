@@ -1,0 +1,7 @@
+# The channel the SDK is developed and tested on. It is not the crate's MSRV:
+# Cargo.toml's rust-version is what a consumer needs, and it is deliberately
+# older. Raise this one freely; raising rust-version is a breaking change.
+[toolchain]
+channel = "1.93.0"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

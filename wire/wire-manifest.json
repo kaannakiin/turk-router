@@ -1,0 +1,263 @@
+{
+  "build": {
+    "deployed_slot": null,
+    "executable_hash": null
+  },
+  "config_seed": "config",
+  "find_route": {
+    "discriminator": "6361705d8f055e00",
+    "flags": {
+      "fail_if_no_profit": 2,
+      "flashloan": 1
+    },
+    "header_len": 20,
+    "max_hook_group_len": 21,
+    "max_menu_accounts": 69,
+    "max_menu_pools": 8,
+    "max_route_mints": 4,
+    "menu_eligible_hop_kinds": [
+      {
+        "discriminant": 0,
+        "hook_capable": false,
+        "name": "RaydiumAmmV4",
+        "window_lens": [
+          9
+        ]
+      },
+      {
+        "discriminant": 1,
+        "hook_capable": true,
+        "name": "Whirlpool",
+        "window_lens": [
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      {
+        "discriminant": 2,
+        "hook_capable": false,
+        "name": "RaydiumClmm",
+        "window_lens": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ]
+      },
+      {
+        "discriminant": 3,
+        "hook_capable": false,
+        "name": "RaydiumCpmm",
+        "window_lens": [
+          14
+        ]
+      },
+      {
+        "discriminant": 4,
+        "hook_capable": false,
+        "name": "MeteoraDlmmSwap",
+        "window_lens": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ]
+      },
+      {
+        "discriminant": 5,
+        "hook_capable": true,
+        "name": "MeteoraDlmmSwap2",
+        "window_lens": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      {
+        "discriminant": 6,
+        "hook_capable": false,
+        "name": "MeteoraDammV2",
+        "window_lens": [
+          15,
+          16
+        ]
+      },
+      {
+        "discriminant": 7,
+        "hook_capable": false,
+        "name": "PumpSwapSell",
+        "window_lens": [
+          24,
+          25,
+          26,
+          27
+        ]
+      },
+      {
+        "discriminant": 8,
+        "hook_capable": false,
+        "name": "PumpSwapBuy",
+        "window_lens": [
+          26,
+          27,
+          28
+        ]
+      },
+      {
+        "discriminant": 9,
+        "hook_capable": false,
+        "name": "MeteoraDammV1",
+        "window_lens": [
+          16
+        ]
+      }
+    ],
+    "menu_entry_len": 4,
+    "prefix_accounts": [
+      "user",
+      "base_ata",
+      "base_mint",
+      "base_token_program",
+      "config_account",
+      "fee_ata"
+    ]
+  },
+  "program_id": "TURKbNaes5RA3sMnkRsCmuPBKZbPTyRxv9cTiMQ43Am",
+  "router_errors": [
+    {
+      "code": 6000,
+      "name": "Paused"
+    },
+    {
+      "code": 6001,
+      "name": "EmptyRoute"
+    },
+    {
+      "code": 6002,
+      "name": "TooManyHops"
+    },
+    {
+      "code": 6003,
+      "name": "BadArgs"
+    },
+    {
+      "code": 6004,
+      "name": "AtaOwnerMismatch"
+    },
+    {
+      "code": 6005,
+      "name": "WindowOutOfBounds"
+    },
+    {
+      "code": 6006,
+      "name": "UnknownHopKind"
+    },
+    {
+      "code": 6007,
+      "name": "BadWindow"
+    },
+    {
+      "code": 6008,
+      "name": "NotATokenAccount"
+    },
+    {
+      "code": 6009,
+      "name": "HopContinuityViolation"
+    },
+    {
+      "code": 6010,
+      "name": "ActualInOutOfBand"
+    },
+    {
+      "code": 6011,
+      "name": "ZeroHopOutput"
+    },
+    {
+      "code": 6012,
+      "name": "BalanceRegression"
+    },
+    {
+      "code": 6013,
+      "name": "SlippageExceeded"
+    },
+    {
+      "code": 6014,
+      "name": "DirectionMismatch"
+    },
+    {
+      "code": 6015,
+      "name": "ZeroAdmin"
+    },
+    {
+      "code": 6016,
+      "name": "CircularRouteNotProfitable"
+    },
+    {
+      "code": 6017,
+      "name": "BadCandidateCount"
+    },
+    {
+      "code": 6018,
+      "name": "TooManyCandidateSteps"
+    },
+    {
+      "code": 6019,
+      "name": "UnknownSelectionPolicy"
+    },
+    {
+      "code": 6020,
+      "name": "CandidatesNotImplemented"
+    },
+    {
+      "code": 6021,
+      "name": "CandidateNotQuotable"
+    },
+    {
+      "code": 6022,
+      "name": "PoolNotTradeable"
+    },
+    {
+      "code": 6023,
+      "name": "CandidateNotPreflightable"
+    },
+    {
+      "code": 6024,
+      "name": "NoEligibleCandidate"
+    },
+    {
+      "code": 6025,
+      "name": "NoProfitableCycle"
+    },
+    {
+      "code": 6026,
+      "name": "ProfitBelowThreshold"
+    },
+    {
+      "code": 6027,
+      "name": "FeeAccountMismatch"
+    },
+    {
+      "code": 6028,
+      "name": "ZeroFeeAccount"
+    },
+    {
+      "code": 6029,
+      "name": "FeeBpsTooHigh"
+    }
+  ],
+  "wire_epoch": 2
+}

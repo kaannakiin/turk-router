@@ -1,0 +1,17 @@
+[package]
+name = "turk-router"
+version = "0.0.0"
+description = "Builds the find_route instruction for the Turk Router program."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+# Not published yet: the venue modules and the builder land before the first
+# release, and a release without them would describe a package that cannot
+# build an instruction.
+publish = false
+
+[dependencies]
+
+[lints]
+workspace = true

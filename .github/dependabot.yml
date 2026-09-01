@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Actions are pinned by commit SHA, which is what makes a moved tag harmless
+  # and also what makes them invisible to a human reader. Dependabot is the only
+  # thing that will notice one going stale.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+  - package-ecosystem: cargo
+    directory: "/"
+    schedule:
+      interval: monthly

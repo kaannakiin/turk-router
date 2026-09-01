@@ -1,0 +1,81 @@
+# Every job here is offline. Conformance is measured against the committed fixture
+# corpus, never against live pool state, so a red build always means this
+# repository changed rather than that the chain moved under it.
+#
+# Actions are pinned by commit SHA. A tag can be moved by whoever owns the action,
+# and this repository takes pull requests from people who do not own it.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  # The wire the deployed program accepts can move without anything here changing,
+  # so no push- or PR-triggered run would ever notice. Only this can.
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      # rust-toolchain.toml pins the channel; rustup picks it up from the repo root.
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - name: fmt
+        run: cargo fmt --all --check
+      # --locked because a client that resolves a different dependency tree than the
+      # one committed is not the client anybody reviewed.
+      - name: clippy
+        run: cargo clippy --all-targets --all-features --locked -- -D warnings
+      - name: test
+        run: cargo test --workspace
+
+  # The manifest is generated from the deployed program's constants in a repository
+  # this one cannot see. Pulling the newest release and diffing it against the
+  # committed copy is how a wire change reaches these clients as a red build instead
+  # of as somebody's rejected transaction.
+  #
+  # Reading a release from a private repository needs a token. Without one the job
+  # skips cleanly rather than failing, so a fork's pull request is not red for a
+  # secret it was never going to have.
+  wire-manifest-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: check for the upstream token
+        id: token
+        env:
+          UPSTREAM_TOKEN: ${{ secrets.WIRE_MANIFEST_TOKEN }}
+        run: |
+          if [ -z "$UPSTREAM_TOKEN" ]; then
+            echo "skipped: WIRE_MANIFEST_TOKEN is not configured"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: fetch the newest published manifest
+        if: steps.token.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.WIRE_MANIFEST_TOKEN }}
+        run: |
+          tag=$(gh release list --repo kaannakiin/solana-router --limit 1 \
+                  --json tagName --jq '.[0].tagName')
+          if [ -z "$tag" ]; then
+            echo "::error::no wire-manifest release has been cut yet"
+            exit 1
+          fi
+          echo "pulling $tag"
+          gh release download "$tag" --repo kaannakiin/solana-router \
+            --pattern wire-manifest.json --output upstream-manifest.json
+      - name: diff it against the committed copy
+        if: steps.token.outputs.skip == 'false'
+        run: |
+          diff -u wire/wire-manifest.json upstream-manifest.json || {
+            echo "::error::the deployed program's wire moved — copy the release's wire-manifest.json into wire/ and update the clients to match"
+            exit 1
+          }
