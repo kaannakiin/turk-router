@@ -103,9 +103,10 @@ fn every_window_a_module_builds_matches_its_fixture() {
                 "{}: slot {position} address",
                 path.display()
             );
-            // A payer slot's writable flag is the capturing transaction's, where the same key was
-            // also the fee payer; the venue instruction needs the signature, not the write.
-            if slot.role != Role::Payer {
+            // Two flags are the capturing transaction's rather than the venue's: a payer slot's
+            // write (the same key was the fee payer), and a write on the venue program itself,
+            // which some captures mark on a sentinel slot and the runtime ignores.
+            if slot.role != Role::Payer && slot.pubkey != fixture.program_id {
                 assert_eq!(
                     meta.is_writable,
                     slot.writable,

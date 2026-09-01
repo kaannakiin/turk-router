@@ -31,19 +31,23 @@
 //! 21. `user_volume_accumulator` (writable)
 //! 22. `FEE_CONFIG` (readonly)
 //! 23. `FEE_PROGRAM` (readonly)
-//! 24. forwarded (role withheld) (readonly)
-//! 25. forwarded (role withheld) (writable)
-//! 26. `pool_v2` (readonly), present only when `pool_v2` is `Some`
-//! 27. `cashback` (writable), present only when `cashback` is `Some`
+//! 24. `cashback` (writable), present only on a cashback pool
+//! 25. `pool_v2` (readonly), present only for a pool that names a pool-v2 sibling
+//! 26. forwarded (role withheld) (readonly)
+//! 27. forwarded (role withheld) (writable)
+//!
+//! When an optional account is absent the slots after it move down: the two forwarded accounts
+//! close every window, at 24 and 25 in the 26-account form.
 //!
 //! `base_token_account` and `quote_token_account` are the user's own associated token accounts:
 //! this module's caller validates them, and the program checks their owner against `user`.
 //!
 //! # Variable tail
 //!
-//! `pool_v2` (slot 26) and `cashback` (slot 27) are each present or absent independently, so
-//! `account_count` is 26 plus one for each that is `Some`. When only `cashback` is present it
-//! occupies slot 26, not 27: the two are appended in order, and neither ever leaves a gap.
+//! After `FEE_PROGRAM` (slot 23), in order: the `cashback` account when present (writable), the
+//! `pool_v2` account when present (readonly), then `forwarded_close`'s two accounts, which close
+//! every window regardless of the other two. `account_count` is 26 plus one for each optional
+//! account that is `Some`.
 //!
 //! # Token programs
 //!
@@ -118,8 +122,9 @@ pub struct PumpSwapBuyAccounts {
     pub forwarded_before_volume_accumulator: [Pubkey; 10],
     /// `user`'s volume accumulator PDA.
     pub user_volume_accumulator: Pubkey,
-    /// Window slots 24..=25, forwarded without validation.
-    pub forwarded_after_fee_program: [Pubkey; 2],
+    /// The two accounts that close every window after `cashback` and `pool_v2`, whether or not
+    /// those are present: readonly, then writable. Forwarded without validation; roles withheld.
+    pub forwarded_close: [Pubkey; 2],
     /// The pool-v2 sibling account, present only for pools that name one.
     pub pool_v2: Option<Pubkey>,
     /// The cashback ledger account, present only for cashback pools.
@@ -156,18 +161,17 @@ pub fn resolve(accounts: PumpSwapBuyAccounts) -> VenueWindow {
     metas.push(writable(accounts.user_volume_accumulator));
     metas.push(readonly(FEE_CONFIG));
     metas.push(readonly(FEE_PROGRAM));
-    metas.push(readonly(accounts.forwarded_after_fee_program[0]));
-    metas.push(writable(accounts.forwarded_after_fee_program[1]));
-
     let mut account_count = BASE_ACCOUNT_COUNT;
-    if let Some(pool_v2) = accounts.pool_v2 {
-        metas.push(readonly(pool_v2));
-        account_count = account_count.checked_add(1).unwrap_or(account_count);
-    }
     if let Some(cashback) = accounts.cashback {
         metas.push(writable(cashback));
-        account_count = account_count.checked_add(1).unwrap_or(account_count);
+        account_count = account_count.saturating_add(1);
     }
+    if let Some(pool_v2) = accounts.pool_v2 {
+        metas.push(readonly(pool_v2));
+        account_count = account_count.saturating_add(1);
+    }
+    metas.push(readonly(accounts.forwarded_close[0]));
+    metas.push(writable(accounts.forwarded_close[1]));
 
     VenueWindow::new(HopKind::PumpSwapBuy, account_count, metas)
 }
@@ -204,7 +208,7 @@ mod tests {
                 key(19),
             ],
             user_volume_accumulator: key(20),
-            forwarded_after_fee_program: [key(21), key(22)],
+            forwarded_close: [key(21), key(22)],
             pool_v2: None,
             cashback: None,
         }
@@ -295,5 +299,30 @@ mod tests {
         let user = &window.account_metas()[2];
         assert_eq!(user.pubkey, key(2));
         assert!(user.is_writable && user.is_signer);
+    }
+
+    #[test]
+    fn the_optionals_precede_the_closing_pair_cashback_first() {
+        let window = resolve(PumpSwapBuyAccounts {
+            cashback: Some(key(31)),
+            pool_v2: Some(key(30)),
+            ..accounts()
+        });
+        let metas = window.account_metas();
+        assert_eq!(metas.len(), 28);
+        assert_eq!((metas[24].pubkey, metas[24].is_writable), (key(31), true));
+        assert_eq!((metas[25].pubkey, metas[25].is_writable), (key(30), false));
+        assert_eq!((metas[26].pubkey, metas[26].is_writable), (key(21), false));
+        assert_eq!((metas[27].pubkey, metas[27].is_writable), (key(22), true));
+
+        let only_pool_v2 = resolve(PumpSwapBuyAccounts {
+            pool_v2: Some(key(30)),
+            ..accounts()
+        });
+        let metas = only_pool_v2.account_metas();
+        assert_eq!(metas.len(), 27);
+        assert_eq!((metas[24].pubkey, metas[24].is_writable), (key(30), false));
+        assert_eq!(metas[25].pubkey, key(21));
+        assert_eq!(metas[26].pubkey, key(22));
     }
 }

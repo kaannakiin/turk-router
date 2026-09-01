@@ -6,6 +6,21 @@ use crate::common::fixture::Fixture;
 
 pub fn resolve(fixture: &Fixture) -> VenueWindow {
     assert_eq!(fixture.program_id, pump_swap_buy::PROGRAM_ID);
+    // The closing pair is always last; whatever sits between slot 22 and it is the optionals,
+    // cashback (writable) before pool_v2 (readonly), told apart by the flag when only one is
+    // present.
+    let optionals = &fixture.slots[23..fixture.slots.len() - 2];
+    let (cashback, pool_v2) = match optionals {
+        [] => (None, None),
+        [one] if one.writable => (Some(one.pubkey), None),
+        [one] => (None, Some(one.pubkey)),
+        [cashback, pool_v2] => (Some(cashback.pubkey), Some(pool_v2.pubkey)),
+        _ => panic!(
+            "{}: {} optional tail slots",
+            fixture.pool_b58,
+            optionals.len()
+        ),
+    };
     pump_swap_buy::resolve(PumpSwapBuyAccounts {
         pool: fixture.slot(0).pubkey,
         user: fixture.slot(1).pubkey,
@@ -29,9 +44,12 @@ pub fn resolve(fixture: &Fixture) -> VenueWindow {
             fixture.slot(18).pubkey,
         ],
         user_volume_accumulator: fixture.slot(20).pubkey,
-        forwarded_after_fee_program: [fixture.slot(23).pubkey, fixture.slot(24).pubkey],
-        pool_v2: fixture.slots.get(25).map(|slot| slot.pubkey),
-        cashback: fixture.slots.get(26).map(|slot| slot.pubkey),
+        forwarded_close: [
+            fixture.slot(fixture.slots.len() - 2).pubkey,
+            fixture.slot(fixture.slots.len() - 1).pubkey,
+        ],
+        cashback,
+        pool_v2,
     })
 }
 
@@ -60,7 +78,7 @@ pub fn reachable_account_counts() -> Vec<u8> {
             key(19),
         ],
         user_volume_accumulator: key(20),
-        forwarded_after_fee_program: [key(21), key(22)],
+        forwarded_close: [key(21), key(22)],
         pool_v2: None,
         cashback: None,
     };

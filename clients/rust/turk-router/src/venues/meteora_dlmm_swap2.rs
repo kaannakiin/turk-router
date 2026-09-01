@@ -19,7 +19,8 @@
 //! - `[7]` `token_x_mint` (readonly).
 //! - `[8]` `token_y_mint` (readonly).
 //! - `[9]` `oracle` (writable) — the pair's oracle account.
-//! - `[10]` `host_fee_in` (readonly; readonly [`PROGRAM_ID`] sentinel when the caller names none).
+//! - `[10]` `host_fee_in` (writable), or the readonly [`PROGRAM_ID`] sentinel when the caller names
+//!   none.
 //! - `[11]` `user` (signer) — the wallet authorizing the swap.
 //! - `[12]` `token_x_program` (readonly).
 //! - `[13]` `token_y_program` (readonly).
@@ -150,7 +151,7 @@ pub fn resolve(
     metas.push(readonly(token_x_mint));
     metas.push(readonly(token_y_mint));
     metas.push(writable(oracle));
-    metas.push(readonly(host_fee_in.unwrap_or(PROGRAM_ID)));
+    metas.push(host_fee_in.map_or_else(|| readonly(PROGRAM_ID), writable));
     metas.push(signer(user));
     metas.push(readonly(token_x_program));
     metas.push(readonly(token_y_program));
@@ -269,5 +270,16 @@ mod tests {
         let host_fee_in = metas.get(10).unwrap();
         assert_eq!(host_fee_in.pubkey, PROGRAM_ID);
         assert!(!host_fee_in.is_writable);
+    }
+
+    #[test]
+    fn a_named_host_fee_account_is_writable() {
+        let mut accounts = sample_accounts();
+        accounts.host_fee_in = Some(key(32));
+        let window = resolve(accounts, crate::venues::PubkeyTail::new(key(50)));
+        let slot = window.account_metas().get(10).unwrap();
+        assert_eq!(slot.pubkey, key(32));
+        assert!(slot.is_writable);
+        assert!(!slot.is_signer);
     }
 }

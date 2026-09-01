@@ -19,7 +19,8 @@
 //! 9. `payer` (signer)
 //! 10. `token_a_program`
 //! 11. `token_b_program`
-//! 12. `referral_token_account`
+//! 12. `referral_token_account` (writable), or the readonly venue program as a sentinel when the
+//!     caller supplies none
 //! 13. `event_authority`
 //! 14. the venue program again
 //! 15. the instructions sysvar, present only in the `RateLimited` form
@@ -89,14 +90,14 @@ pub struct MeteoraDammV2Accounts {
     pub token_a_program: Pubkey,
     /// The token program owning `token_b_mint`.
     pub token_b_program: Pubkey,
-    /// The pool's referral fee token account, when the pool has one.
+    /// The caller's referral fee token account, when the caller wants the referral share. `None`
+    /// places the venue program in the slot as the sentinel.
     pub referral_token_account: Option<Pubkey>,
 }
 
 /// Builds the window for one Meteora DAMM v2 hop.
 #[must_use]
 pub fn resolve(accounts: MeteoraDammV2Accounts, form: DammV2Form) -> VenueWindow {
-    let referral_token_account = accounts.referral_token_account.unwrap_or(PROGRAM_ID);
     let mut metas = vec![
         readonly(PROGRAM_ID),
         readonly(POOL_AUTHORITY),
@@ -110,7 +111,9 @@ pub fn resolve(accounts: MeteoraDammV2Accounts, form: DammV2Form) -> VenueWindow
         signer(accounts.payer),
         readonly(accounts.token_a_program),
         readonly(accounts.token_b_program),
-        readonly(referral_token_account),
+        accounts
+            .referral_token_account
+            .map_or_else(|| readonly(PROGRAM_ID), writable),
         readonly(EVENT_AUTHORITY),
         readonly(PROGRAM_ID),
     ];
@@ -204,7 +207,7 @@ mod tests {
     fn slot_flags_match_the_swap2_account_list() {
         let window = resolve(accounts(Some(key(11))), DammV2Form::Base);
         let metas = window.account_metas();
-        let writable_slots = [2, 3, 4, 5, 6];
+        let writable_slots = [2, 3, 4, 5, 6, 12];
         for (index, meta) in metas.iter().enumerate() {
             assert_eq!(
                 meta.is_writable,
@@ -213,5 +216,15 @@ mod tests {
             );
             assert_eq!(meta.is_signer, index == 9, "slot {index}");
         }
+    }
+
+    #[test]
+    fn a_named_referral_account_is_writable() {
+        let referral = Pubkey::new_from_array([77; 32]);
+        let window = resolve(accounts(Some(referral)), DammV2Form::Base);
+        let slot = window.account_metas()[12].clone();
+        assert_eq!(slot.pubkey, referral);
+        assert!(slot.is_writable);
+        assert!(!slot.is_signer);
     }
 }
