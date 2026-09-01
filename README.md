@@ -22,20 +22,25 @@ program reads it, and refuse input that already violates the budget before it co
 
 ## What is here today
 
-The wire contract, and not yet the code that encodes it.
+The wire contract and the Rust client that encodes it.
 
 `wire/wire-manifest.json` is generated from the deployed program's own constants: the instruction
 discriminator, the header and menu-entry widths, the account-count ceilings, the flag bits, the
-six-name account prefix, the menu-eligible hop kinds with the window lengths each venue accepts, the
-config PDA seed, and every `RouterError` with its number. It is the single source every client in
-this repository reads. No number in this repository is transcribed by hand.
+six-slot account prefix with its signer and writable flags, the two base mints, the menu-eligible
+hop kinds with the window lengths each venue accepts, the config PDA seed, and every `RouterError`
+with its number. Every constant the Rust client declares is held against it by a test.
 
-`wire/fixtures` is a corpus of synthetic `find_route` windows, published under rewritten addresses.
-The pool state in them is synthesized, and the identities it was planted against are replaced before
-publication, so nothing here names a live pool.
+`wire/fixtures` is a corpus of synthetic `find_route` windows covering every menu kind, published
+under rewritten addresses. The pool state in them is synthesized, and the identities they were
+planted against are replaced before publication — only program ids, token programs, the base mints
+and program-wide authorities survive — so nothing here names a live pool.
 
-`clients/rust/turk-router` is the Rust client's crate root. `clients/ts` is where the TypeScript
-client will live. Neither builds an instruction yet, and neither is published.
+`clients/rust/turk-router` builds the instruction: `build_find_route_instruction` lays out the
+prefix, the route mints and the menu, and one module per venue turns a pool's accounts into a
+window whose declared account count cannot disagree with what it carries. Every window a module
+builds is compared slot by slot against the fixture corpus, and the set of account counts each
+module can declare is compared against the manifest. [ARCHITECTURE.md](ARCHITECTURE.md) is the map.
+The crate is not yet published to crates.io. `clients/ts` is where the TypeScript client will live.
 
 ## Which program this targets
 
