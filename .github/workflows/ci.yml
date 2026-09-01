@@ -1,17 +1,24 @@
-# Every job here is offline. Conformance is measured against the committed fixture
-# corpus, never against live pool state, so a red build always means this
-# repository changed rather than that the chain moved under it.
+# Every job here is offline, and this repository holds no secret. Both are
+# deliberate: it takes pull requests from people who do not own it, and GitHub
+# withholds secrets from a fork's pull request, so any check that needed one
+# would silently skip for exactly the contributors whose changes need checking
+# most.
 #
-# Actions are pinned by commit SHA. A tag can be moved by whoever owns the action,
-# and this repository takes pull requests from people who do not own it.
+# That is why the wire contract arrives as a committed file. When the deployed
+# program's wire moves, its own repository opens a pull request here carrying the
+# new wire/wire-manifest.json, and the tests below then hold every client
+# constant against it. Nothing here reaches out to fetch it.
+#
+# Actions are pinned by commit SHA, because a tag can be moved by whoever owns
+# the action.
 name: CI
 
 on:
   push:
     branches: ["**"]
   pull_request:
-  # The wire the deployed program accepts can move without anything here changing,
-  # so no push- or PR-triggered run would ever notice. Only this can.
+  # Catches the ecosystem moving under a tree nobody has touched: a new clippy
+  # lint, a yanked dependency.
   schedule:
     - cron: "0 7 * * 1"
   workflow_dispatch:
@@ -28,54 +35,11 @@ jobs:
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
       - name: fmt
         run: cargo fmt --all --check
-      # --locked because a client that resolves a different dependency tree than the
-      # one committed is not the client anybody reviewed.
+      # --locked because a client that resolves a different dependency tree than
+      # the one committed is not the client anybody reviewed.
       - name: clippy
         run: cargo clippy --all-targets --all-features --locked -- -D warnings
+      # manifest_agreement.rs is the wire gate: it holds every constant the
+      # clients declare against the committed wire/wire-manifest.json.
       - name: test
-        run: cargo test --workspace
-
-  # The manifest is generated from the deployed program's constants in a repository
-  # this one cannot see. Pulling the newest release and diffing it against the
-  # committed copy is how a wire change reaches these clients as a red build instead
-  # of as somebody's rejected transaction.
-  #
-  # Reading a release from a private repository needs a token. Without one the job
-  # skips cleanly rather than failing, so a fork's pull request is not red for a
-  # secret it was never going to have.
-  wire-manifest-diff:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: check for the upstream token
-        id: token
-        env:
-          UPSTREAM_TOKEN: ${{ secrets.WIRE_MANIFEST_TOKEN }}
-        run: |
-          if [ -z "$UPSTREAM_TOKEN" ]; then
-            echo "skipped: WIRE_MANIFEST_TOKEN is not configured"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: fetch the newest published manifest
-        if: steps.token.outputs.skip == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.WIRE_MANIFEST_TOKEN }}
-        run: |
-          tag=$(gh release list --repo kaannakiin/solana-router --limit 1 \
-                  --json tagName --jq '.[0].tagName')
-          if [ -z "$tag" ]; then
-            echo "::error::no wire-manifest release has been cut yet"
-            exit 1
-          fi
-          echo "pulling $tag"
-          gh release download "$tag" --repo kaannakiin/solana-router \
-            --pattern wire-manifest.json --output upstream-manifest.json
-      - name: diff it against the committed copy
-        if: steps.token.outputs.skip == 'false'
-        run: |
-          diff -u wire/wire-manifest.json upstream-manifest.json || {
-            echo "::error::the deployed program's wire moved — copy the release's wire-manifest.json into wire/ and update the clients to match"
-            exit 1
-          }
+        run: cargo test --workspace --locked

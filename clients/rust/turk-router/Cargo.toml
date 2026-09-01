@@ -13,5 +13,10 @@ publish = false
 
 [dependencies]
 
+[dev-dependencies]
+# Only the tests read the manifest; nothing this crate publishes depends on a
+# JSON parser.
+serde_json = "1"
+
 [lints]
 workspace = true

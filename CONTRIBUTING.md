@@ -43,9 +43,13 @@ cargo clippy --all-targets --all-features --locked -- -D warnings
 cargo test
 ```
 
-CI runs the same four commands and a fifth: it pulls the newest wire manifest published by the
-program's repository and diffs it against the committed copy. A red diff there means the program's
-wire moved and this repository has not caught up yet.
+CI runs the same commands and nothing else. It holds no secret and reaches no network, so it runs
+identically on a fork's pull request as it does on main.
+
+The wire gate is a test rather than a fetch. `manifest_agreement.rs` holds every constant the
+clients declare against the committed `wire/wire-manifest.json`. When the deployed program's wire
+moves, its own repository opens a pull request here carrying the new manifest, and that test turns
+red until the clients are updated to match.
 
 ## Commit messages
 
