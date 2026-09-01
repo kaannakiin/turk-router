@@ -1,0 +1,16 @@
+# One workspace for the Rust client. The TypeScript client lives beside it under
+# clients/ts/ and is built by npm, not by Cargo.
+[workspace]
+members = ["clients/rust/turk-router"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+# What a consumer needs, kept below the channel rust-toolchain.toml pins so that
+# using a newer compiler here cannot quietly raise the bar for anyone else.
+rust-version = "1.89.0"
+license = "Apache-2.0"
+repository = "https://github.com/kaannakiin/turk-router"
+
+[workspace.lints.rust]
+missing_docs = "deny"

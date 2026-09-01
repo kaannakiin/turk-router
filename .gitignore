@@ -1,0 +1,11 @@
+# Cargo and npm build output. Nothing generated belongs in the history: the wire
+# artifacts under wire/ are committed on purpose, and they are the only ones.
+target/
+node_modules/
+dist/
+
+# Compiled Solana programs. This repository builds none; a .so appearing here
+# would have come from somewhere else.
+*.so
+
+.DS_Store

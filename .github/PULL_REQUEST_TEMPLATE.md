@@ -1,0 +1,14 @@
+## What this changes
+
+## Why
+
+<!-- If this touches encoding, say which wire-manifest.json field it reads. A wire number written
+     as a literal instead of read from the manifest is the one change that is always wrong. -->
+
+## Checks
+
+- [ ] `cargo fmt --all --check`
+- [ ] `cargo clippy --all-targets --all-features --locked -- -D warnings`
+- [ ] `cargo test`
+- [ ] No wire number is written as a literal
+- [ ] No test depends on network state
