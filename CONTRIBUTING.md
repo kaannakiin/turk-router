@@ -82,3 +82,22 @@ diff already shows what.
 
 No test may depend on network state. Conformance is measured against `wire/fixtures`. A test that
 needs a live RPC to pass will not be merged.
+
+## The golden corpus
+
+`clients/golden/find_route.json` records the instruction data and account list the Rust client
+emits for a fixed sweep of inputs: every window length the program accepts, every flag byte, every
+route-mint count, both base mints, and every error the builder raises. It is the file that holds
+the TypeScript client to the Rust one: each client verifies it in its own test, and neither can
+drift without a CI job turning red.
+
+Only the Rust test writes it:
+
+```sh
+TURK_ROUTER_WRITE_GOLDEN=1 cargo test -p turk-router --test cross_language
+```
+
+A change that moves what the Rust client emits turns `cross_language.rs` red; regenerate, read the
+diff, and commit the file in the same pull request. The TypeScript client never writes the file,
+and a pull request that edits it by hand is refused. Addresses in the file are base58 and bytes are
+hex, so no numeric array in it can be mistaken for a keypair.

@@ -93,6 +93,21 @@ the flags it sets, and the fixed addresses it supplies from its own constants.
 The corpus covers every kind. A fixture is a window, not a transaction: the tests need no network,
 hold no secret, and run the same on a fork's pull request as on `main`.
 
+## The golden corpus
+
+`clients/golden/find_route.json` is the second corpus, and it runs the other way: where the
+fixtures come from the program and pin the venue modules, the golden is written by this crate and
+pins whatever else claims to build the same instruction. For a fixed sweep of typed inputs — one
+window per account count the program accepts, every flag byte, every route-mint count, both base
+mints, the account budget on both sides of its limit, and every error the builder raises — it
+records the instruction data as hex and the account list as `address:role` strings.
+
+`cross_language.rs` regenerates the file when `TURK_ROUTER_WRITE_GOLDEN` is set and otherwise
+asserts the committed text is what the crate builds now; it also rebuilds every case from the
+committed inputs alone, so the file is proven sufficient by construction. A second client verifies
+the same file with its own builder. If that client's test is red and this crate's is green, the
+other client is wrong; if both are red, this crate's output moved and the file needs regenerating.
+
 ## Versioning
 
 The README's versioning section is the contract. In short: the manifest's `wire_epoch` is the
