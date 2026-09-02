@@ -15,7 +15,7 @@ publish = false
 solana-instruction = "3"
 # curve25519: Pubkey::find_program_address for the config account and the fee
 # wallet's token account, both derived offline.
-solana-pubkey = { version = "3", features = ["curve25519"] }
+solana-pubkey = { version = "4", features = ["curve25519"] }
 
 [dev-dependencies]
 # Only the tests read the manifest; nothing this crate publishes depends on a
