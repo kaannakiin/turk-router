@@ -6,8 +6,11 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-# Not published yet: the first release waits for the venue modules and the
-# builder to be measured against the deployed program.
+keywords = ["solana", "arbitrage", "instruction", "defi"]
+categories = ["cryptography::cryptocurrencies", "api-bindings"]
+readme = "README.md"
+# Not published yet: the first release waits for the program that carries
+# find_route to be deployed and its executable hash pinned in CHANGELOG.md.
 publish = false
 
 [dependencies]

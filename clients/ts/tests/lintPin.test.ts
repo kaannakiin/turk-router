@@ -154,7 +154,8 @@ test("the package is private ESM with pinned dependencies", () => {
       `${name}: ${String(version)}`,
     );
   }
-  assert.deepEqual(arrayField(manifest, "files"), ["dist", "README.md"]);
+  // The licence ships in the tarball: Apache-2.0 asks for it and npm does not add it.
+  assert.deepEqual(arrayField(manifest, "files"), ["dist", "README.md", "LICENSE"]);
 });
 
 test("wire literals live only in src/wire.ts", () => {

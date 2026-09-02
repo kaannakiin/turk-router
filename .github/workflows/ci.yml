@@ -78,3 +78,34 @@ jobs:
       # tarball would carry.
       - name: check
         run: npm run check
+
+  # A pull request can add a dependency as easily as a line of code, and this repository takes
+  # them from people who do not own it. Both lockfiles are held to their public registry, so a
+  # package fetched from anywhere else is refused here rather than noticed later. No secret, so it
+  # runs on a fork's pull request too.
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: every npm dependency is fetched from registry.npmjs.org
+        run: |
+          hosts=$(grep -o '"resolved": *"[^"]*"' clients/ts/package-lock.json \
+            | sed 's/.*"resolved": *"//' \
+            | sed 's|\(^[a-z][a-z0-9+.-]*://[^/]*\).*|\1|' \
+            | sort -u | grep -v '^https://registry.npmjs.org$' || true)
+          if [ -n "$hosts" ]; then
+            echo "::error::a dependency is fetched from outside the public npm registry:"
+            echo "$hosts"
+            exit 1
+          fi
+
+      - name: every cargo dependency is fetched from crates.io
+        run: |
+          sources=$(grep -o '^source = "[^"]*"' Cargo.lock | sed 's/^source = "//; s/"$//' \
+            | sort -u | grep -v '^registry+https://github.com/rust-lang/crates.io-index$' || true)
+          if [ -n "$sources" ]; then
+            echo "::error::a crate is fetched from outside crates.io:"
+            echo "$sources"
+            exit 1
+          fi
