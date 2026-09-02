@@ -11,9 +11,10 @@ Builders for the program's other instructions are never published here.
 ## Numbers come from the manifest
 
 `wire/wire-manifest.json` is generated from the deployed program's own constants. The Rust crate
-declares its wire constants once, in `src/wire.rs`, and `tests/manifest_agreement.rs` holds every
-one of them against the manifest — that test is the wire gate. A wire literal anywhere else in the
-crate is the defect this repository is arranged to prevent, and it is the one review comment
+declares its wire constants once, in `src/wire.rs`, and the TypeScript package once, in
+`src/wire.ts`; `tests/manifest_agreement.rs` and `tests/manifestAgreement.test.ts` hold every one of
+them against the manifest — those tests are the wire gate. A wire literal anywhere else in either
+client is the defect this repository is arranged to prevent, and it is the one review comment
 guaranteed to block a change.
 
 A venue module carries the addresses its venue fixes (its program id, program-wide authorities), as
@@ -41,6 +42,30 @@ two `u64`s. Offsets derived from input are bounds-checked before they index.
 
 Public items are documented; the workspace denies `missing_docs`.
 
+## TypeScript
+
+`clients/ts` is held to the same discipline by other means. The `tsconfig.json` flags are the
+TypeScript half of the deny list (`strict`, `exactOptionalPropertyTypes`,
+`noUncheckedIndexedAccess`, `erasableSyntaxOnly`, `isolatedDeclarations`, `verbatimModuleSyntax`
+among them), and
+`oxlint --type-aware` carries what a compiler flag cannot: no `any`, no non-null assertion, no
+narrowing `as`, exhaustive `switch`, no floating promise. `tests/lintPin.test.ts` pins the flags,
+the rules, the import allow-list and the wire-literal rule the way `lint_pin.rs` pins the Rust list.
+
+- ESM only; `import type` for types; relative imports end in `.js`.
+- `Array<T>`, never `T[]`. No `any`. No `!`. `as` only as `as const`.
+- Comments are `//` above the code; TSDoc is `/** */`. The comment budget is the same as in Rust.
+- Tests use `node:test` and `node:assert/strict` under `tsx`, `test` not `it`, and live in `tests/`.
+  `tests/types.typecheck.ts` is compiled and never run; its `@ts-expect-error` lines are the
+  compile-fail proofs.
+- `src/` imports only the five granular Kit packages it declares as peers. No `@solana/kit`
+  umbrella, no `@solana/web3.js`, no `bs58`, no `node:*` in `src/`.
+- Every non-default in a config file states its reason, in the file when it can carry a comment
+  and in `clients/ts/README.md` when it cannot.
+- No numeric array of sixty or more elements anywhere in the tree, and no URL host other than
+  `github.com` and `apache.org` outside the lockfile: addresses are base58 strings, bytes are hex,
+  and the program's publish gate reads anything else as a leak.
+
 ## Documentation
 
 A `///` on a public item is the API contract, not a comment: say what the item is, what the caller
@@ -65,8 +90,16 @@ cargo test --workspace --locked
 RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 ```
 
-CI runs the same commands and nothing else. It holds no secret and reaches no network, so it runs
-identically on a fork's pull request as it does on main.
+For the TypeScript client:
+
+```sh
+cd clients/ts
+npm ci --ignore-scripts
+npm run check
+```
+
+CI runs the same commands and nothing else. It holds no secret and reaches no network beyond the
+two package registries, so it runs identically on a fork's pull request as it does on main.
 
 The wire gate is a test rather than a fetch. `manifest_agreement.rs` holds every constant the
 clients declare against the committed `wire/wire-manifest.json`. When the deployed program's wire

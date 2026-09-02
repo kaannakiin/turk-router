@@ -1,0 +1,33 @@
+// Why this file exists, when the house rule is no tsconfig unless needed: tsc is the only
+// typechecker here (tsx runs the tests and checks nothing), tsconfig.build.json extends this for
+// the ESM and .d.ts emit npm will publish, and oxlint --type-aware reads it as the project. The
+// flag set below is the TypeScript half of the Rust crate's eight-lint deny list, and it only
+// binds while tsc runs with it in CI; tests/lintPin.test.ts pins every flag. If TypeScript 7
+// regresses on one of them, typescript@5.9.3 carries the identical set.
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src", "tests"]
+}

@@ -1,8 +1,8 @@
-# Every job here is offline, and this repository holds no secret. Both are
-# deliberate: it takes pull requests from people who do not own it, and GitHub
-# withholds secrets from a fork's pull request, so any check that needed one
-# would silently skip for exactly the contributors whose changes need checking
-# most.
+# No job here reaches the network for anything but its package registry, and
+# this repository holds no secret. Both are deliberate: it takes pull requests
+# from people who do not own it, and GitHub withholds secrets from a fork's
+# pull request, so any check that needed one would silently skip for exactly
+# the contributors whose changes need checking most.
 #
 # That is why the wire contract arrives as a committed file. When the deployed
 # program's wire moves, its own repository opens a pull request here carrying the
@@ -49,3 +49,32 @@ jobs:
         run: cargo doc --workspace --no-deps --locked
         env:
           RUSTDOCFLAGS: -D warnings
+
+  # The TypeScript client, held to the Rust one by clients/golden/find_route.json:
+  # the rust job verifies that file against what the Rust client emits, this job
+  # against what the TypeScript client emits, so the two cannot drift apart
+  # without one of them turning red.
+  typescript:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: clients/ts
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # The floor package.json declares; testing on it is what proves it.
+          node-version: 22
+          cache: npm
+          cache-dependency-path: clients/ts/package-lock.json
+      # --ignore-scripts: nothing in the tree needs a lifecycle script (esbuild
+      # and the native binaries resolve from optionalDependencies), and a
+      # dependency that gained one would otherwise run code on every fork's
+      # pull request.
+      - name: install
+        run: npm ci --ignore-scripts
+      # Format, lint, typecheck (which compiles tests/types.typecheck.ts, the
+      # compile-fail proofs), test, build, and a pack dry-run listing what a
+      # tarball would carry.
+      - name: check
+        run: npm run check

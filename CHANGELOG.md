@@ -12,8 +12,13 @@
 - Documentation: `ARCHITECTURE.md`; CONTRIBUTING gains the documentation rules and the `cargo doc`
   check that CI runs.
 - Cross-language corpus: `clients/golden/find_route.json`, the bytes and account list the Rust
-  client emits for a fixed sweep of inputs, generated and verified by `tests/cross_language.rs`.
-  The TypeScript client will verify the same file.
+  client emits for a fixed sweep of inputs, generated and verified by `tests/cross_language.rs`
+  and verified again by the TypeScript client's `tests/crossLanguage.test.ts`.
+- TypeScript client: `buildFindRouteInstruction` and the ten venue modules on `@solana/kit`'s
+  granular packages; ESM, Node 22 or newer, private and unpublished. Tuple-typed tails, a nominal
+  `VenueWindow`, and an async builder are the three deliberate departures from the Rust shape.
+- CI: a `typescript` job (`npm ci --ignore-scripts`, then format, lint, typecheck, test, build and
+  a pack dry-run) beside the `rust` job; dependabot watches `clients/ts`.
 
 Repository scaffold: the wire manifest and the synthetic fixture corpus are committed; nothing is
 published to crates.io or npm.
