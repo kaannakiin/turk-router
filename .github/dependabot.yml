@@ -25,3 +25,8 @@ updates:
           - typescript
           - oxlint
           - oxlint-tsgolint
+    # @types/node tracks the engine floor package.json declares, not the newest
+    # Node: a major bump here is a policy change, not maintenance.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
