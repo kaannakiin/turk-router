@@ -10,9 +10,15 @@ Builders for the program's other instructions are never published here.
 
 ## Numbers come from the manifest
 
-`wire/wire-manifest.json` is generated from the deployed program's own constants. Read every wire
-number from it. A literal copied into source is the defect this repository is arranged to prevent,
-and it is the one review comment guaranteed to block a change.
+`wire/wire-manifest.json` is generated from the deployed program's own constants. The Rust crate
+declares its wire constants once, in `src/wire.rs`, and `tests/manifest_agreement.rs` holds every
+one of them against the manifest — that test is the wire gate. A wire literal anywhere else in the
+crate is the defect this repository is arranged to prevent, and it is the one review comment
+guaranteed to block a change.
+
+A venue module carries the addresses its venue fixes (its program id, program-wide authorities), as
+byte arrays with the base58 form in the doc comment and a unit test that pins the two together. The
+fixture corpus is what holds those against the program.
 
 ## Rust
 
@@ -35,12 +41,28 @@ two `u64`s. Offsets derived from input are bounds-checked before they index.
 
 Public items are documented; the workspace denies `missing_docs`.
 
+## Documentation
+
+A `///` on a public item is the API contract, not a comment: say what the item is, what the caller
+must supply, and — for anything that returns a `Result` — an `# Errors` section. Plain `//`
+comments stay near zero; one earns its place only for a wire fact the code cannot express, a
+security invariant, or a trap. Describe what is, never what was: no history, no "previously".
+
+A venue module's doc lists its window: every slot by index, with `(writable)` and `(signer)`
+markers, in exactly the order the module emits. Where the program forwards a slot without reading
+it, the doc gives the position and withholds the role name until it is verified against the
+venue's published interface.
+
+Write "Token program" and "Token Extensions program", "onchain" and "offchain", and "instruction"
+for an instruction — a transaction is what the caller builds around it.
+
 ## Before you open a pull request
 
 ```sh
 cargo fmt --all --check
 cargo clippy --all-targets --all-features --locked -- -D warnings
-cargo test
+cargo test --workspace --locked
+RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 ```
 
 CI runs the same commands and nothing else. It holds no secret and reaches no network, so it runs

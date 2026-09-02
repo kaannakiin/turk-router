@@ -5,6 +5,10 @@
   },
   "config_seed": "config",
   "find_route": {
+    "base_mints": [
+      "So11111111111111111111111111111111111111112",
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    ],
     "discriminator": "6361705d8f055e00",
     "flags": {
       "fail_if_no_profit": 2,
@@ -127,6 +131,38 @@
       }
     ],
     "menu_entry_len": 4,
+    "prefix_account_metas": [
+      {
+        "is_signer": true,
+        "is_writable": false,
+        "name": "user"
+      },
+      {
+        "is_signer": false,
+        "is_writable": true,
+        "name": "base_ata"
+      },
+      {
+        "is_signer": false,
+        "is_writable": false,
+        "name": "base_mint"
+      },
+      {
+        "is_signer": false,
+        "is_writable": false,
+        "name": "base_token_program"
+      },
+      {
+        "is_signer": false,
+        "is_writable": false,
+        "name": "config_account"
+      },
+      {
+        "is_signer": false,
+        "is_writable": true,
+        "name": "fee_ata"
+      }
+    ],
     "prefix_accounts": [
       "user",
       "base_ata",

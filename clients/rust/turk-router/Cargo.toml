@@ -6,17 +6,24 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
-# Not published yet: the venue modules and the builder land before the first
-# release, and a release without them would describe a package that cannot
-# build an instruction.
+# Not published yet: the first release waits for the venue modules and the
+# builder to be measured against the deployed program.
 publish = false
 
 [dependencies]
+# Instruction and AccountMeta, nothing else.
+solana-instruction = "3"
+# curve25519: Pubkey::find_program_address for the config account and the fee
+# wallet's token account, both derived offline.
+solana-pubkey = { version = "3", features = ["curve25519"] }
 
 [dev-dependencies]
 # Only the tests read the manifest; nothing this crate publishes depends on a
 # JSON parser.
 serde_json = "1"
+# Recomputes the instruction discriminator from its name so a typo in the
+# constant cannot ship.
+sha2 = "0.10"
 
 [lints]
 workspace = true

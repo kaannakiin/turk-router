@@ -43,3 +43,9 @@ jobs:
       # clients declare against the committed wire/wire-manifest.json.
       - name: test
         run: cargo test --workspace --locked
+      # A broken intra-doc link or a missing doc is a defect in the API contract,
+      # and docs.rs is too late to learn about it.
+      - name: doc
+        run: cargo doc --workspace --no-deps --locked
+        env:
+          RUSTDOCFLAGS: -D warnings
