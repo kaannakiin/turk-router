@@ -3,6 +3,7 @@
 
 #![allow(dead_code)]
 
+pub mod corpus;
 pub mod fixture;
 pub mod harness;
 

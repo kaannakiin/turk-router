@@ -11,6 +11,9 @@
   and every venue's window lengths, the crate-root lint pin, and the Whirlpool compile-fail proof.
 - Documentation: `ARCHITECTURE.md`; CONTRIBUTING gains the documentation rules and the `cargo doc`
   check that CI runs.
+- Cross-language corpus: `clients/golden/find_route.json`, the bytes and account list the Rust
+  client emits for a fixed sweep of inputs, generated and verified by `tests/cross_language.rs`.
+  The TypeScript client will verify the same file.
 
 Repository scaffold: the wire manifest and the synthetic fixture corpus are committed; nothing is
 published to crates.io or npm.
