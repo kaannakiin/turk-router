@@ -46,6 +46,13 @@ The crate is not yet published to crates.io.
 a committed record of the bytes and account list the Rust client emits for a fixed sweep of inputs,
 verified by a test on each side. Neither client is published yet.
 
+## Venues
+
+[VENUES.md](VENUES.md) is the account window every supported venue takes: the hop kind, the venue
+program, the account counts a menu entry may declare, and every slot in order with its flags and
+where its address comes from. It is generated from the router's own window schema on each wire
+release, so it cannot drift from the program that enforces it.
+
 ## Which program this targets
 
 `TURKbNaes5RA3sMnkRsCmuPBKZbPTyRxv9cTiMQ43Am`, wire epoch 2. The program ID and the epoch are both
@@ -54,6 +61,38 @@ go stale.
 
 The router's own source is not public. What is published is the wire contract it accepts, which is
 what a caller needs and all a caller needs.
+
+## Rust
+
+```rust
+use turk_router::{
+    build_find_route_instruction, venues, BaseMint, FindRouteFlags, FindRouteParams, RouteMint,
+};
+use turk_router::venues::whirlpool::SupplementalTickArrays;
+
+// Choosing the menu is your job; the client only turns each pool into its window.
+let menu = [
+    venues::raydium_amm_v4::resolve(amm_v4_accounts),
+    venues::whirlpool::resolve(&whirlpool_accounts, SupplementalTickArrays::from([tick_array])),
+];
+
+let instruction = build_find_route_instruction(&FindRouteParams {
+    user,
+    base_mint: BaseMint::Wsol,
+    base_ata,
+    fee_wallet,
+    flags: FindRouteFlags { flashloan: false, fail_if_no_profit: true },
+    max_walk_steps: 0,
+    min_profit_base_units: 1,
+    route_mints: &[RouteMint { token_program, user_ata }],
+    menu: &menu,
+})?;
+// Sign and send with your own stack; this crate stops here.
+```
+
+The base mint is node 0 of the graph the program searches and `route_mints[i]` is node `i + 1`, so
+the order of route mints is part of the input. The builder derives two addresses offline, the config
+account and the fee collector's token account; nothing reaches the network.
 
 ## TypeScript
 
