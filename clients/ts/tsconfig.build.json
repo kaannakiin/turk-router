@@ -1,0 +1,16 @@
+// The emit half: only src/, with declarations, and no Node types so that a Node global slipping
+// into the published code fails here rather than in a browser.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "stripInternal": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": []
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "turk-router",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Builds the find_route instruction for the Turk Router program.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaannakiin/turk-router",
+    "directory": "clients/ts"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "oxlint --type-aware",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test 'tests/**/*.test.ts'",
+    "build": "tsc -p tsconfig.build.json",
+    "check": "npm run format && npm run lint && npm run typecheck && npm run test && npm run build && npm pack --dry-run"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "proseWrap": "always"
+  },
+  "peerDependencies": {
+    "@solana/addresses": "^8.2.0",
+    "@solana/codecs-core": "^8.2.0",
+    "@solana/codecs-data-structures": "^8.2.0",
+    "@solana/codecs-numbers": "^8.2.0",
+    "@solana/instructions": "^8.2.0"
+  },
+  "devDependencies": {
+    "@solana/addresses": "8.2.0",
+    "@solana/codecs-core": "8.2.0",
+    "@solana/codecs-data-structures": "8.2.0",
+    "@solana/codecs-numbers": "8.2.0",
+    "@solana/codecs-strings": "8.2.0",
+    "@solana/instructions": "8.2.0",
+    "@types/node": "22.20.1",
+    "oxlint": "1.81.0",
+    "oxlint-tsgolint": "7.0.2001",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "7.0.2"
+  }
+}

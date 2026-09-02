@@ -11,3 +11,17 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
+  # The lockfile pins every npm dependency to an exact version and registry URL;
+  # like the SHA-pinned actions, that makes a stale one invisible to a reader.
+  - package-ecosystem: npm
+    directory: "/clients/ts"
+    schedule:
+      interval: monthly
+    # oxlint-tsgolint is versioned against the TypeScript release it lints for;
+    # bumping one without the other breaks type-aware linting.
+    groups:
+      typescript-toolchain:
+        patterns:
+          - typescript
+          - oxlint
+          - oxlint-tsgolint

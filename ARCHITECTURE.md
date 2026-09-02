@@ -1,8 +1,8 @@
 # Architecture
 
-This document is the map of the Rust client. The README says what the package is and is not;
-this says how the crate is arranged, how one instruction is assembled, and where every number it
-encodes comes from.
+This document is the map of both clients. The README says what the package is and is not; this
+says how the Rust crate is arranged, how one instruction is assembled, where every number it
+encodes comes from, how the TypeScript client mirrors it, and what holds the two together.
 
 ## What the crate is, and is not
 
@@ -93,6 +93,34 @@ the flags it sets, and the fixed addresses it supplies from its own constants.
 The corpus covers every kind. A fixture is a window, not a transaction: the tests need no network,
 hold no secret, and run the same on a fork's pull request as on `main`.
 
+## The TypeScript mirror
+
+`clients/ts` mirrors the crate module for module: `wire.rs` is `wire.ts`, `hop_kind.rs` is
+`hopKind.ts`, `error.rs` is `error.ts`, `pda.rs` is `pda.ts`, `programs.rs` is `programs.ts`,
+`builder.rs` is `builder.ts`, and each `venues/<kind>.rs` is `venues/<kind>.ts`. Names translate by
+one rule: a Rust `snake_case` field is a TypeScript `camelCase` field, a Rust `*_ID` address is a
+TypeScript `*_ADDRESS`, `HopKind::X` is `HopKind.X` with the wire byte as its value, and
+`venues::x::resolve` is `venues.x.resolve`. `Option<Pubkey>` is a required key typed
+`Address | undefined`, so an omitted slot is a compile error. `u64` is `bigint`; `u8` is `number`
+with a range guard before any encoder runs, which is the one error the TypeScript client can raise
+that the Rust one cannot.
+
+Three places are not literal translations. A bounded tail is a union of tuple types, so a literal
+outside the venue's range is a type error and the fourth Whirlpool tick array is refused by `tsc`;
+`tests/types.typecheck.ts` carries those proofs as `@ts-expect-error` lines, the TypeScript form of
+the Rust `compile_fail` doctest, and every `resolve` also checks the length at run time for a caller
+holding an untyped array. `VenueWindow` is a class with private fields, so an object literal cannot
+pass as a window and the count it declares is the length of what it holds. And
+`buildFindRouteInstruction` is `async`: Kit derives a program address by awaiting
+`crypto.subtle.digest`, so the config account and the fee collector's token account arrive as
+promises. Nothing reaches the network.
+
+The discipline is mirrored too. The `tsconfig.json` flags are the TypeScript half of the crate's
+eight-lint deny list, `oxlint --type-aware` carries what a compiler flag cannot, `src/wire.ts` is
+the only module with a wire literal, and `tests/lintPin.test.ts` pins all of it the way
+`lint_pin.rs` pins the Rust list. The same `manifest_agreement` and `fixture_conformance` checks run in
+TypeScript against the same `wire/` files.
+
 ## The golden corpus
 
 `clients/golden/find_route.json` is the second corpus, and it runs the other way: where the
@@ -104,9 +132,11 @@ records the instruction data as hex and the account list as `address:role` strin
 
 `cross_language.rs` regenerates the file when `TURK_ROUTER_WRITE_GOLDEN` is set and otherwise
 asserts the committed text is what the crate builds now; it also rebuilds every case from the
-committed inputs alone, so the file is proven sufficient by construction. A second client verifies
-the same file with its own builder. If that client's test is red and this crate's is green, the
-other client is wrong; if both are red, this crate's output moved and the file needs regenerating.
+committed inputs alone, so the file is proven sufficient by construction. The TypeScript client
+verifies the same file in `tests/crossLanguage.test.ts`, one test per case, and never writes it.
+If that test is red and this crate's is green, the TypeScript client is wrong; if both are red, this
+crate's output moved and the file needs regenerating. The two CI jobs read the same file, so neither
+client can drift without one of them turning red.
 
 ## Versioning
 

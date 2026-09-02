@@ -40,7 +40,11 @@ prefix, the route mints and the menu, and one module per venue turns a pool's ac
 window whose declared account count cannot disagree with what it carries. Every window a module
 builds is compared slot by slot against the fixture corpus, and the set of account counts each
 module can declare is compared against the manifest. [ARCHITECTURE.md](ARCHITECTURE.md) is the map.
-The crate is not yet published to crates.io. `clients/ts` is where the TypeScript client will live.
+The crate is not yet published to crates.io.
+
+`clients/ts` is the same client in TypeScript, and `clients/golden` is what holds the two together:
+a committed record of the bytes and account list the Rust client emits for a fixed sweep of inputs,
+verified by a test on each side. Neither client is published yet.
 
 ## Which program this targets
 
@@ -51,6 +55,42 @@ go stale.
 The router's own source is not public. What is published is the wire contract it accepts, which is
 what a caller needs and all a caller needs.
 
+## TypeScript
+
+`clients/ts` sits on `@solana/kit`'s granular packages (`@solana/addresses`, `@solana/instructions`,
+`@solana/codecs-*`), ESM only, Node 22 or newer, and returns a Kit `Instruction`. A caller on
+`@solana/web3.js` v1 converts it with `@solana/web3-compat` on their own side.
+
+```ts
+import { BaseMint, buildFindRouteInstruction, venues } from "turk-router";
+
+// Choosing the menu is your job; the client only turns each pool into its window.
+const menu = [
+  venues.raydiumAmmV4.resolve({ pool, baseVault, quoteVault, userSource, userDestination, payer }),
+  venues.whirlpool.resolve(whirlpoolAccounts, [supplementalTickArray]),
+];
+
+const instruction = await buildFindRouteInstruction({
+  user,
+  baseMint: BaseMint.Wsol,
+  baseAta,
+  feeWallet,
+  flags: { flashloan: false, failIfNoProfit: true },
+  maxWalkSteps: 0,
+  minProfitBaseUnits: 1n,
+  routeMints: [{ tokenProgram, userAta }],
+  menu,
+});
+// Sign and send with your own stack; this package stops here.
+```
+
+The call is awaited because the two addresses the builder derives, the config account and the fee
+collector's token account, are hashed with WebCrypto, whose API returns promises. Nothing reaches
+the network. The base mint is node 0 of the graph the program searches and `routeMints[i]` is node
+`i + 1`, so the order of route mints is part of the input. Eight pools never fit: the shortest
+window is nine accounts and the budget is sixty-nine, so a menu holds at most seven.
+[clients/ts/README.md](clients/ts/README.md) has the rest.
+
 ## Building and testing
 
 ```sh
@@ -58,6 +98,8 @@ cargo build
 cargo test
 cargo clippy --all-targets --all-features --locked -- -D warnings
 cargo fmt --all --check
+
+cd clients/ts && npm ci --ignore-scripts && npm run check
 ```
 
 No test here reaches the network. Conformance is measured against the committed fixture corpus, the
