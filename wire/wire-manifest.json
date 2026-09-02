@@ -24,6 +24,87 @@
         "discriminant": 0,
         "hook_capable": false,
         "name": "RaydiumAmmV4",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_program",
+                  "pinned": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "amm_authority",
+                  "pinned": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "base_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "quote_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_source",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_destination",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "payer",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                }
+              ]
+            }
+          ]
+        },
         "window_lens": [
           9
         ]
@@ -32,6 +113,150 @@
         "discriminant": 1,
         "hook_capable": true,
         "name": "Whirlpool",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_program_a",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_program_b",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "memo_program",
+                  "pinned": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_authority",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "whirlpool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "mint_a",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "mint_b",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_owner_account_a",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_vault_a",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_owner_account_b",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_vault_b",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "tick_array_0",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "tick_array_1",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "tick_array_2",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "oracle",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            },
+            {
+              "kind": "repeat",
+              "max": 3,
+              "min": 0,
+              "name": "supplemental_tick_array",
+              "writable": true
+            }
+          ]
+        },
         "window_lens": [
           16,
           17,
@@ -43,6 +268,134 @@
         "discriminant": 2,
         "hook_capable": false,
         "name": "RaydiumClmm",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "payer",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "amm_config",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_token_account",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "output_token_account",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "output_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "observation_state",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_program",
+                  "pinned": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_2022_program",
+                  "pinned": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "memo_program",
+                  "pinned": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "input_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "output_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "repeat",
+              "max": 7,
+              "min": 1,
+              "name": "tick_array",
+              "writable": true
+            }
+          ]
+        },
         "window_lens": [
           15,
           16,
@@ -57,6 +410,127 @@
         "discriminant": 3,
         "hook_capable": false,
         "name": "RaydiumCpmm",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "user",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "authority",
+                  "pinned": "GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "amm_config",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_token_account",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "output_token_account",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "output_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_token_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "output_token_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "input_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "output_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "observation_state",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            }
+          ]
+        },
         "window_lens": [
           14
         ]
@@ -65,6 +539,150 @@
         "discriminant": 4,
         "hook_capable": false,
         "name": "MeteoraDlmmSwap",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "lb_pair",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "bin_array_bitmap_extension",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": true,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "reserve_x",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "reserve_y",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_token_in",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_token_out",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "mint_x",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "mint_y",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "oracle",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "host_fee_in",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": true,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "token_x_program",
+                  "pinned": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_y_program",
+                  "pinned": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "event_authority",
+                  "pinned": "D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "program_self",
+                  "pinned": "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "repeat",
+              "max": 8,
+              "min": 1,
+              "name": "bin_array",
+              "writable": true
+            }
+          ]
+        },
         "window_lens": [
           17,
           18,
@@ -80,6 +698,158 @@
         "discriminant": 5,
         "hook_capable": true,
         "name": "MeteoraDlmmSwap2",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "bin_array_bitmap_extension",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": true,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "reserve_x",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "reserve_y",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_token_in",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_token_out",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_x_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_y_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "oracle",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "host_fee_in",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": true,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "token_x_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_y_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "memo_program",
+                  "pinned": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "event_authority",
+                  "pinned": "D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "program_self",
+                  "pinned": "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "repeat",
+              "max": 8,
+              "min": 1,
+              "name": "bin_array",
+              "writable": true
+            }
+          ]
+        },
         "window_lens": [
           18,
           19,
@@ -95,6 +865,149 @@
         "discriminant": 6,
         "hook_capable": false,
         "name": "MeteoraDammV2",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool_authority",
+                  "pinned": "HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "input_token_account",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "output_token_account",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_a_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_b_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "token_a_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_b_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "payer",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "token_a_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_b_program",
+                  "pinned": null,
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "referral_token_account",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": true,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "event_authority",
+                  "pinned": "3rmHSu74h1ZcmAisVcWerTCiRDQbUrBKmcwptYGjHfet",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "program_self",
+                  "pinned": "cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "optional",
+              "name": "instructions_sysvar",
+              "slots": [
+                {
+                  "name": "instructions_sysvar",
+                  "pinned": "Sysvar1nstructions1111111111111111111111111",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            }
+          ]
+        },
         "window_lens": [
           15,
           16
@@ -104,6 +1017,176 @@
         "discriminant": 7,
         "hook_capable": false,
         "name": "PumpSwapSell",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": true
+                },
+                {
+                  "name": "forwarded_before_base_mint",
+                  "pinned": null,
+                  "role": "Forwarded",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "base_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "quote_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "base_ata",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "quote_ata",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "base_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "quote_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            },
+            {
+              "kind": "opaque",
+              "name": "forwarded_before_fee_config",
+              "writable": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false
+              ]
+            },
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "fee_config",
+                  "pinned": "5PHirr8joyTMp9JMm6nW7hNDVyEYdkzDqazxPD7RaTjx",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "fee_program",
+                  "pinned": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "optional",
+              "name": "cashback",
+              "slots": [
+                {
+                  "name": "cashback_0",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "cashback_1",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            },
+            {
+              "kind": "optional",
+              "name": "pool_v2",
+              "slots": [
+                {
+                  "name": "pool_v2",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "opaque",
+              "name": "forwarded_close",
+              "writable": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
         "window_lens": [
           24,
           25,
@@ -115,6 +1198,184 @@
         "discriminant": 8,
         "hook_capable": false,
         "name": "PumpSwapBuy",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": true
+                },
+                {
+                  "name": "forwarded_before_base_mint",
+                  "pinned": null,
+                  "role": "Forwarded",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "base_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "quote_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "base_token_account",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "quote_token_account",
+                  "pinned": null,
+                  "role": "TraderAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "base_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "quote_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            },
+            {
+              "kind": "opaque",
+              "name": "forwarded_before_volume_accumulator",
+              "writable": [
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false
+              ]
+            },
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "global_volume_accumulator",
+                  "pinned": "C2aFPdENg4A2HQsmrd5rTw5TaYBX5Ku887cWjbFKtZpw",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "user_volume_accumulator",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "fee_config",
+                  "pinned": "5PHirr8joyTMp9JMm6nW7hNDVyEYdkzDqazxPD7RaTjx",
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "fee_program",
+                  "pinned": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "optional",
+              "name": "cashback",
+              "slots": [
+                {
+                  "name": "cashback",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                }
+              ]
+            },
+            {
+              "kind": "optional",
+              "name": "pool_v2",
+              "slots": [
+                {
+                  "name": "pool_v2",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            },
+            {
+              "kind": "opaque",
+              "name": "forwarded_close",
+              "writable": [
+                false,
+                true
+              ]
+            }
+          ]
+        },
         "window_lens": [
           26,
           27,
@@ -125,6 +1386,143 @@
         "discriminant": 9,
         "hook_capable": false,
         "name": "MeteoraDammV1",
+        "window": {
+          "segments": [
+            {
+              "kind": "fixed",
+              "slots": [
+                {
+                  "name": "program",
+                  "pinned": "Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB",
+                  "role": "VenueProgram",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "pool",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_source",
+                  "pinned": null,
+                  "role": "InAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "user_dest",
+                  "pinned": null,
+                  "role": "OutAta",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "a_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "b_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "a_token_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "b_token_vault",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "a_vault_lp_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "b_vault_lp_mint",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "a_vault_lp",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "b_vault_lp",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "protocol_token_fee",
+                  "pinned": null,
+                  "role": "Account",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": true
+                },
+                {
+                  "name": "payer",
+                  "pinned": null,
+                  "role": "Payer",
+                  "sentinel_when_unset": false,
+                  "signer": true,
+                  "writable": false
+                },
+                {
+                  "name": "dynamic_vault_program",
+                  "pinned": "24Uqj9JCLxUeoC3hGfh5W3s9FM9uCHDS2SG3LYwBpyTi",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                },
+                {
+                  "name": "token_program",
+                  "pinned": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+                  "role": "ProgramId",
+                  "sentinel_when_unset": false,
+                  "signer": false,
+                  "writable": false
+                }
+              ]
+            }
+          ]
+        },
         "window_lens": [
           16
         ]
