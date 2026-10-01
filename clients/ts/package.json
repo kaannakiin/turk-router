@@ -55,8 +55,8 @@
     "@solana/codecs-strings": "8.2.0",
     "@solana/instructions": "8.2.0",
     "@types/node": "22.20.1",
-    "oxlint": "1.81.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "oxlint": "1.86.0",
+    "oxlint-tsgolint": "7.0.2003",
     "prettier": "3.9.6",
     "tsx": "4.23.13",
     "typescript": "7.0.2"
